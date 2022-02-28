@@ -41,10 +41,10 @@ def process_comp(comps_dict, tcomp, comp_data_dict):
             download_url = data.openhub_get_download(openhub_url['href'])
 
         copyrights = "NOASSERTION"
-        # cpe = "NOASSERTION"
+        cpe = "NOASSERTION"
         pkg = "NOASSERTION"
         if not config.args.no_copyrights:
-            # copyrights, cpe, pkg = get_orig_data(bomentry)
+            cpe = get_cpe_of_component(bomentry)
             copyrights = comp_data_dict[cver]['copyrights']
 
             if 'origins' in bomentry.keys() and len(bomentry['origins']) > 0:
@@ -131,7 +131,7 @@ def process_comp(comps_dict, tcomp, comp_data_dict):
             # PackageLicenseComments: <text>Other versions available for a commercial license</text>,
             "filesAnalyzed": False,
             "packageComment": spdx.quote(packageinfo),
-            # "ExternalRef: SECURITY cpe23Type {}".format(cpe),
+            # "ExternalRef": "SECURITY cpe23Type {}".format(cpe),
             # "ExternalRef: PACKAGE-MANAGER purl pkg:" + pkg,
             # ExternalRef: PERSISTENT-ID swh swh:1:cnt:94a9ed024d3859793618152ea559a168bbcbb5e2,
             # ExternalRef: OTHER LocationRef-acmeforge acmecorp/acmenator/4.1.3-alpha,
@@ -146,6 +146,11 @@ def process_comp(comps_dict, tcomp, comp_data_dict):
                     "referenceLocator": pkg,
                     "referenceCategory": "PACKAGE_MANAGER",
                     "referenceType": "purl"
+                },
+                {
+                    "referenceCategory": "SECURITY",
+                    "referenceType": "cpe23Type",
+                    "referenceLocator": cpe
                 },
                 {
                     "referenceCategory": "OTHER",
@@ -609,3 +614,25 @@ async def async_get_supplier(session, comp, token):
                 supplier_name = sbom_field['values'][0]
 
     return comp['componentVersion'], supplier_name
+
+
+def get_cpe_of_component(comp):
+    cpe = "NOASSERTION"
+    try:
+        if 'origins' in comp.keys() and len(comp['origins']) > 0:
+            orig = comp['origins'][0]
+            if 'externalNamespace' in orig.keys() and 'externalId' in orig.keys():
+                thisid = orig['externalId'].split(':')
+                if len(thisid) < 2:
+                    cpe = "cpe:2.3:a:{}:{}:*:*:*:*:*:*".format(orig['externalNamespace'], orig['externalId'])
+                elif len(thisid) == 2:
+                    # Special case for github
+                    cpe = "cpe:2.3:a:{}:{}:*:*:*:*:*:*".format(orig['externalNamespace'], orig['externalId'])
+                elif len(thisid) == 3:
+                    cpe = "cpe:2.3:a:{}:*:*:*:*:*:*".format(orig['externalId'])
+        else:
+            print("	INFO: No assigned origin")
+    except Exception as exc:
+        print("except" + str(exc))
+
+    return cpe
