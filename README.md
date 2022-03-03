@@ -123,3 +123,4 @@ By default for OSS components, Black Duck with use the external reference (forge
 For custom components in the BOM, users will need to manually populate this.
 Create a custom fields for 'BOM Component' entries with name 'PackageSupplier' and type 'Text'.
 Updating the custom field for custom (or KB) components will replace the value in the output SPDX file.
+
