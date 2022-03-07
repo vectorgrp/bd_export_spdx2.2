@@ -1,4 +1,4 @@
-# Synopsys Black Duck - bd_export_spdx22_json.py v0.20 Async
+# Synopsys Black Duck - bd_export_spdx22_json.py v0.23
 # OVERVIEW
 
 This script is provided under an OSS license (specified in the LICENSE file) to allow users to export SPDX version 2.2 in JSON format from Black Duck projects.
@@ -20,6 +20,15 @@ The optional `--recursive` option will traverse sub-projects to include all leaf
 Other options can be specified to reduce the number of API calls to speed up script execution.
 
 # LATEST UPDATES
+
+## Version 0.23
+
+Added option --exclude_ignored_components (or -x) to exclude ignored components
+
+## Version 0.22
+
+Minor fix for projects in projects
+
 ## Version 0.19-0.20 Async
 
 Making all component data requests async delivering additional 2-3x overall speed improvements
@@ -50,7 +59,7 @@ This version uses the aiohttp library to perform asynchronous download of compon
 
 Install the package using the command:
 
-        pip3 install -i https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple bd-export-spdx2.2
+        pip3 install bd-export-spdx2.2
 
 # USAGE
 
@@ -76,6 +85,8 @@ The program can be invoked as follows:
          --no_copyrights       Do not export copyright data for components (speeds up processing - default=false)
          --no_files            Do not export file data for components (speeds up processing - default=false)
          -b, --basic           Do not export copyright, download link or package file data (speeds up processing - same as using "--no_copyrights --no_files")
+         -x, --exclude_ignored_components
+                               Exclude ignored components from the output file
          --blackduck_url BLACKDUCK_URL
                                Black Duck server URL including https://
          --blackduck_api_token BLACKDUCK_API_TOKEN

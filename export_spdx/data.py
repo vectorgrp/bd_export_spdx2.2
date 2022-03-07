@@ -125,22 +125,23 @@ def get_package_supplier(comp):
     return ''
 
 
-def get_bom_components(verdict):
+def get_bom_components(verdict, exclude_ignored=False):
     comp_dict = {}
     res = globals.bd.list_resources(verdict)
     # if 'components' not in res:
     if True:
         # Getting the component list via a request is much quicker than the new Client model
-        thishref = res['href'] + "/components?limit=5000"
-        headers = {
-            'accept': "application/vnd.blackducksoftware.bill-of-materials-6+json",
-        }
-        res = globals.bd.get_json(thishref, headers=headers)
-        bom_comps = res['items']
-    # else:
-    #     bom_comps = globals.bd.get_resource('components', parent=ver)
+        # thishref = res['href'] + "/components?limit=5000"
+        # headers = {
+        #     'accept': "application/vnd.blackducksoftware.bill-of-materials-6+json",
+        # }
+        # res = globals.bd.get_json(thishref, headers=headers)
+        # bom_comps = res['items']
+        bom_comps = globals.bd.get_resource('components', parent=verdict)
     for comp in bom_comps:
         if 'componentVersion' not in comp:
+            continue
+        if 'ignored' in comp and exclude_ignored and comp['ignored']:
             continue
         compver = comp['componentVersion']
 
