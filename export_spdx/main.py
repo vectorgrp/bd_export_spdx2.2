@@ -38,6 +38,8 @@ if api == '' or api is None:
     print('BLACKDUCK_API_TOKEN not set or specified as option --blackduck_api_token')
     sys.exit(2)
 
+globals.proxy_url = config.args.proxy_url
+
 globals.bd = Client(
     token=api,
     base_url=url,

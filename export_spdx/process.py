@@ -428,7 +428,7 @@ async def async_get_copyrights(session, comp, token):
         'Authorization': f'Bearer {token}',
     }
     # resp = globals.bd.get_json(thishref, headers=headers)
-    async with session.get(thishref, headers=headers, ssl=ssl) as resp:
+    async with session.get(thishref, headers=headers, ssl=ssl, proxy=globals.proxy_url) as resp:
         result_data = await resp.json()
         for copyrt in result_data['items']:
             if copyrt['active']:
@@ -458,7 +458,7 @@ async def async_get_comments(session, comp, token):
             'accept': "application/vnd.blackducksoftware.bill-of-materials-6+json",
         }
         # resp = globals.bd.get_json(thishref, headers=headers)
-        async with session.get(thishref, headers=headers, ssl=ssl) as resp:
+        async with session.get(thishref, headers=headers, ssl=ssl, proxy=globals.proxy_url) as resp:
             result_data = await resp.json()
             mytime = datetime.datetime.now()
             # mytime.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
@@ -491,7 +491,7 @@ async def async_get_files(session, comp, token):
             'accept': "application/vnd.blackducksoftware.bill-of-materials-6+json",
         }
 
-        async with session.get(thishref, headers=headers, ssl=ssl) as resp:
+        async with session.get(thishref, headers=headers, ssl=ssl, proxy=globals.proxy_url) as resp:
             result_data = await resp.json()
             cfile = result_data['items']
             if len(cfile) > 0:
@@ -538,7 +538,7 @@ async def async_get_licenses(session, lcomp, token):
                     }
                     # resp = globals.bd.session.get('/api/licenses/' + lic_ref + '/text', headers=headers)
                     thishref = f"{globals.bd.base_url}/api/licenses/{lic_ref}/text"
-                    async with session.get(thishref, headers=headers, ssl=ssl) as resp:
+                    async with session.get(thishref, headers=headers, ssl=ssl, proxy=globals.proxy_url) as resp:
                         # lic_text = await resp.content.decode("utf-8")
                         lic_text = await resp.text('utf-8')
                         if thislic not in globals.spdx_lics:
@@ -581,7 +581,7 @@ async def async_get_url(session, comp, token):
         'Authorization': f'Bearer {token}',
     }
     # resp = globals.bd.get_json(thishref, headers=headers)
-    async with session.get(link, headers=headers, ssl=ssl) as resp:
+    async with session.get(link, headers=headers, ssl=ssl, proxy=globals.proxy_url) as resp:
         result_data = await resp.json()
         if 'url' in result_data.keys():
             url = result_data['url']
@@ -605,7 +605,7 @@ async def async_get_supplier(session, comp, token):
             'accept': "application/vnd.blackducksoftware.bill-of-materials-6+json",
         }
 
-        async with session.get(thishref, headers=headers, ssl=ssl) as resp:
+        async with session.get(thishref, headers=headers, ssl=ssl, proxy=globals.proxy_url) as resp:
             result_data = await resp.json()
             cfields = result_data['items']
             sbom_field = next((item for item in cfields if item['label'] == globals.SBOM_CUSTOM_SUPPLIER_NAME),

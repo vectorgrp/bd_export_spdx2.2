@@ -38,6 +38,7 @@ parser.add_argument("--blackduck_api_token", type=str,
 parser.add_argument("--blackduck_trust_certs", help="BLACKDUCK trust certs", action='store_true')
 parser.add_argument("--blackduck_timeout", help="BD Server requests timeout (seconds - default 15)", default=15)
 parser.add_argument("--debug", help="Turn on debug messages", action='store_true')
+parser.add_argument("--proxy_url", help="Proxy to use", type=str)
 
 args = parser.parse_args()
 
