@@ -95,6 +95,7 @@ The program can be invoked as follows:
                                Trust Black Duck server certificates if unsigned
          --blackduck_timeout   Change the server connection timeout (default 15 seconds)
          --debug               Add reporting of processed components
+         --proxy_url           Proxy configuration if you're behind a proxy. (Note: still neccessary to define proxy environment variables) 
 
 
 If `project_name` does not match a single project then all matching projects will be listed and the script will terminate.
