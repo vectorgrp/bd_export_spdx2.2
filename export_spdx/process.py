@@ -49,7 +49,7 @@ def process_comp(comps_dict, tcomp, comp_data_dict):
             if (dictObj) {
                 copyrights = dictObj.get('copyrights')
             } else {
-                print("No copyrights found for {} (SKIPPED)".format(cver)
+                print("No copyrights found for {} (SKIPPED)").format(cver)
             }
 
             if 'origins' in bomentry.keys() and len(bomentry['origins']) > 0:
