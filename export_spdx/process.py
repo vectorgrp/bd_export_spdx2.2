@@ -45,7 +45,12 @@ def process_comp(comps_dict, tcomp, comp_data_dict):
         pkg = "NOASSERTION"
         if not config.args.no_copyrights:
             cpe = get_cpe_of_component(bomentry)
-            copyrights = comp_data_dict[cver]['copyrights']
+            dictObj = comp_data_dict.get(cver)
+            if (dictObj) {
+                copyrights = dictObj.get('copyrights')
+            } else {
+                print("No copyrights found for {} (SKIPPED)".format(cver)
+            }
 
             if 'origins' in bomentry.keys() and len(bomentry['origins']) > 0:
                 orig = bomentry['origins'][0]
