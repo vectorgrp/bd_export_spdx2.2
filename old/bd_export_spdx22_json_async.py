@@ -820,7 +820,7 @@ def get_bom_components(verdict):
 
 
 async def async_main(compsdict, token, ver):
-    async with aiohttp.ClientSession() as session:
+    async with aiohttp.ClientSession(trust_env=True) as session:
         copyright_tasks = []
         comment_tasks = []
         file_tasks = []
