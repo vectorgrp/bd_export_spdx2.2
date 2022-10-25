@@ -46,11 +46,10 @@ def process_comp(comps_dict, tcomp, comp_data_dict):
         if not config.args.no_copyrights:
             cpe = get_cpe_of_component(bomentry)
             dictObj = comp_data_dict.get(cver)
-            if (dictObj) {
+            if not dictObj:
                 copyrights = dictObj.get('copyrights')
-            } else {
+            else:
                 print("No copyrights found for {} (SKIPPED)").format(cver)
-            }
 
             if 'origins' in bomentry.keys() and len(bomentry['origins']) > 0:
                 orig = bomentry['origins'][0]
