@@ -46,7 +46,7 @@ def process_comp(comps_dict, tcomp, comp_data_dict):
         if not config.args.no_copyrights:
             cpe = get_cpe_of_component(bomentry)
             dictObj = comp_data_dict.get(cver)
-            if not dictObj:
+            if not dictObj and dictObj is not None:
                 copyrights = dictObj.get('copyrights')
             else:
                 print("No copyrights found for " + cver + " (SKIPPED)")
