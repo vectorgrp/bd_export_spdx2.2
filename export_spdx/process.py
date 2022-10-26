@@ -45,11 +45,7 @@ def process_comp(comps_dict, tcomp, comp_data_dict):
         pkg = "NOASSERTION"
         if not config.args.no_copyrights:
             cpe = get_cpe_of_component(bomentry)
-            dictObj = comp_data_dict.get(cver)
-            if not dictObj and dictObj is not None:
-                copyrights = dictObj.get('copyrights')
-            else:
-                print("No copyrights found for " + cver + " (SKIPPED)")
+            copyrights = saveGetFromDict(comp_data_dict, cver, 'copyrights')
 
             if 'origins' in bomentry.keys() and len(bomentry['origins']) > 0:
                 orig = bomentry['origins'][0]
@@ -58,24 +54,20 @@ def process_comp(comps_dict, tcomp, comp_data_dict):
 
         package_file = "NOASSERTION"
         if not config.args.no_files:
-            dictObj = comp_data_dict.get(cver)
-            if not dictObj and dictObj is not None:
-                package_file = comp_data_dict[cver]['files']
-            else:
-                print("No files found for " + cver + " (SKIPPED)")
+            package_file = saveGetFromDict(comp_data_dict, cver, 'files')
         desc = 'NOASSERTION'
         if 'description' in tcomp.keys():
             desc = re.sub("[^a-zA-Z.()\d\s\-:]", '', bomentry['description'])
 
-        annotations = comp_data_dict[cver]['comments']
-        lic_string = comp_data_dict[cver]['licenses']
+        annotations = saveGetFromDict(comp_data_dict, cver, 'comments')
+        lic_string = saveGetFromDict(comp_data_dict, cver, 'licenses')
 
         component_package_supplier = ''
 
         # homepage = 'NOASSERTION'
-        homepage = comp_data_dict[cver]['url']
+        homepage = saveGetFromDict(comp_data_dict, cver, 'url')
 
-        bom_package_supplier = comp_data_dict[cver]['supplier']
+        bom_package_supplier = saveGetFromDict(comp_data_dict, cver, 'supplier')
 
         packageinfo = "This is a"
 
@@ -180,6 +172,13 @@ def process_comp(comps_dict, tcomp, comp_data_dict):
         globals.spdx['packages'].append(thisdict)
     return spdxpackage_name
 
+def saveGetFromDict(comp_data_dict, cver, key):
+    dictObj = comp_data_dict.get(cver)
+    if not dictObj and dictObj is not None:
+        return dictObj.get(key)
+    else:
+        print("No " + key + " found for " + cver + " (SKIPPED)")
+        return "NOASSERTION"
 
 def process_children(pkgname, compverurl, child_url, indenttext, comps_dict, comp_data_dict):
     res = globals.bd.get_json(child_url + '?limit=5000')
