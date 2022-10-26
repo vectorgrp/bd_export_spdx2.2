@@ -58,8 +58,11 @@ def process_comp(comps_dict, tcomp, comp_data_dict):
 
         package_file = "NOASSERTION"
         if not config.args.no_files:
-            package_file = comp_data_dict[cver]['files']
-
+            dictObj = comp_data_dict.get(cver)
+            if not dictObj and dictObj is not None:
+                package_file = comp_data_dict[cver]['files']
+            else:
+                print("No files found for " + cver + " (SKIPPED)")
         desc = 'NOASSERTION'
         if 'description' in tcomp.keys():
             desc = re.sub("[^a-zA-Z.()\d\s\-:]", '', bomentry['description'])
